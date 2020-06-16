@@ -1,0 +1,11 @@
+version: '3'
+services:
+    datarobot-automl-consumer:
+        env_file:
+            - .env
+        build:
+            context: .
+            dockerfile: automl-consumer/Dockerfile
+        entrypoint: ["python", "automl_predictions.py"]
+        volumes:
+            - ./logs:/root/logs

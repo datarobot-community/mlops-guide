@@ -4,19 +4,13 @@ Guidelines for developing and contributing to this project.
 
 ## List of project maintainers
 
-//TODO: Update with your details
-
-- [Your name](https://github.com/your-github-username)
-- [Someone else name](https://github.com/your-github-username)
+- [gonzo](https://github.com/dgonzo)
 
 ## Opening new issues
-
-//TODO: Adjust if necessary
 
 - Before opening a new issue check if there are any existing FAQ entries (if one exists), issues or pull requests that match your case
 - Open an issue, and make sure to label the issue accordingly - bug, improvement, feature request, etc...
 - Be as specific and detailed as possible
-
 
 ## Setting up the development environment
 

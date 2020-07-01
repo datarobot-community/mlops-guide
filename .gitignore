@@ -155,3 +155,5 @@ cython_debug/
 # project
 .idea/
 logs/*
+!/.docker/rabbitmq/data/
+!/datarobot-mlops-agent-*.tar.gz

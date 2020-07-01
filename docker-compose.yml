@@ -1,0 +1,24 @@
+version: '3'
+services:
+    datarobot-automl-consumer:
+        env_file:
+            - .env
+        build:
+            context: .
+            dockerfile: automl-consumer/Dockerfile
+        entrypoint: ["python", "automl_predictions.py"]
+        volumes:
+            - ./logs:/root/logs
+    rabbitmq:
+        image: library/rabbitmq:3-management-alpine
+        volumes:
+        - ./.docker/rabbitmq/etc/:/etc/rabbitmq/
+        - ./.docker/rabbitmq/data/:/var/lib/rabbitmq/
+        - ./.docker/rabbitmq/logs/:/var/log/rabbitmq/
+        ports:
+        - 15672:15672
+        healthcheck:
+          test: ["CMD", "nc", "-z", "localhost", "5672"]
+          interval: 5s
+          timeout: 15s
+          retries: 1

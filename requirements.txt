@@ -1,0 +1,5 @@
+black
+loguru
+python_dotenv
+requests
+pandas

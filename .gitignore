@@ -182,7 +182,12 @@ Temporary Items
 
 # Project
 .idea/
-logs/*
 .docker/rabbitmq/data/
 datarobot-mlops-agent-*.tar.gz
 datarobot-mlops-agent-*/
+#/logs/*.csv
+log[s]/
+/.docker/mlops-agent/etc/mlops.agent.conf.yaml
+hostname
+hosts
+resolv.conf

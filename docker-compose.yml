@@ -9,6 +9,35 @@ services:
         entrypoint: ["python", "automl_predictions.py"]
         volumes:
             - ./logs:/root/logs
+    mock-on-premise-prediction-service:
+        env_file:
+          - .env
+        build:
+            context: .
+        depends_on:
+          - rabbitmq
+        links:
+          - rabbitmq
+    datarobot-mlops-agent:
+        env_file:
+          - .env
+        build:
+          context: ./datarobot-mlops-agent
+          args:
+              - MLOPS_AGENT_VERSION=${MLOPS_AGENT_VERSION}
+              - MLOPS_AGENT_BUILD=${MLOPS_AGENT_BUILD}
+        volumes:
+        - ./.docker/mlops-agent/etc/:/etc/
+        - ./.docker/mlops-agent/var/log/:/var/log/
+        links:
+          - rabbitmq
+        depends_on:
+          - rabbitmq
+        environment:
+          - AGENT_CONFIG_YAML=/etc/mlops.agent.conf.yaml
+          - AGENT_LOG_PROPERTIES=/etc/mlops.agent.log4j.properties
+          - AGENT_JVM_OPT=-Xmx4g
+          - AGENT_JAR_PATH=/srv/datarobot-mlops-agent-${MLOPS_AGENT_VERSION}/lib/agent-${MLOPS_AGENT_VERSION}.jar
     rabbitmq:
         image: library/rabbitmq:3-management-alpine
         volumes:

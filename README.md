@@ -6,6 +6,7 @@ This repo contains example code and accompanies the [MLOps guide](https://api-do
 * Auto MPG model deployed. See [Quickstart Guide](https://api-docs.datarobot.com/docs/quickstart-guide)
 * [Docker](https://docs.docker.com/get-docker/)
 * Optional: [Docker-compose](https://docs.docker.com/compose/install/)
+* mlops-agent: Download from 
 
 ## Usage
 

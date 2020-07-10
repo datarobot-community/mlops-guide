@@ -24,8 +24,8 @@ services:
         build:
           context: ./datarobot-mlops-agent
           args:
-              - MLOPS_AGENT_VERSION=${MLOPS_AGENT_VERSION}
-              - MLOPS_AGENT_BUILD=${MLOPS_AGENT_BUILD}
+              - ARG_MLOPS_AGENT_VERSION=${ENV_MLOPS_AGENT_VERSION}
+              - ARG_MLOPS_AGENT_BUILD=${ENV_MLOPS_AGENT_BUILD}
         volumes:
         - ./.docker/mlops-agent/etc/:/etc/
         - ./.docker/mlops-agent/var/log/:/var/log/
@@ -34,10 +34,13 @@ services:
         depends_on:
           - rabbitmq
         environment:
-          - AGENT_CONFIG_YAML=/etc/mlops.agent.conf.yaml
-          - AGENT_LOG_PROPERTIES=/etc/mlops.agent.log4j.properties
-          - AGENT_JVM_OPT=-Xmx4g
-          - AGENT_JAR_PATH=/srv/datarobot-mlops-agent-${MLOPS_AGENT_VERSION}/lib/agent-${MLOPS_AGENT_VERSION}.jar
+          - MLOPS_AGENT_VERSION=${ENV_MLOPS_AGENT_VERSION}
+          - MLOPS_AGENT_BUILD=${ENV_MLOPS_AGENT_BUILD}
+          - AGENT_HOST_DIR=${ENV_AGENT_HOST_DIR:-/opt/datarobot/mlops}
+          - AGENT_CONFIG_YAML=${ENV_AGENT_CONFIG_YAML:-/etc/mlops.agent.conf.yaml}
+          - AGENT_LOG_PROPERTIES=${ENV_AGENT_LOG_PROPERTIES:-/etc/mlops.agent.log4j.properties}
+          - AGENT_JVM_OPT=${ENV_AGENT_JVM_OPT:--Xmx4g}
+        tty: true
     rabbitmq:
         image: library/rabbitmq:3-management-alpine
         volumes:

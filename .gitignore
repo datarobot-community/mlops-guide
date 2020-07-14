@@ -194,3 +194,5 @@ hosts
 resolv.conf
 /.docker/automl-consumer/logs/*.csv
 /.docker/external-prediction-service/logs/mlops/*.csv
+/.docker/mlops-agent/logs/mlops.agent.out
+/*.ipynb

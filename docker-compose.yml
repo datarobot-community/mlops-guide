@@ -33,11 +33,10 @@ services:
           - AGENT_LOG_PROPERTIES=${ENV_AGENT_LOG_PROPERTIES:-/etc/mlops.agent.log4j.properties}
           - AGENT_JVM_OPT=${ENV_AGENT_JVM_OPT:--Xmx4g}
         volumes:
-        - ./.docker/external-prediction-service/logs/ta:/tmp/ta
         - ./.docker/external-prediction-service/logs/mlops:/var/log/mlops
         - ./.docker/mlops-agent/etc/:/etc/
         - ./.docker/mlops-agent/var/log/:/var/log/
-        - ./.docker/mlops-agent/tmp/:/tmp/
+        - ./.docker/mlops-agent/tmp/ta/:/tmp/ta/
 #    datarobot-mlops-agent:
 #        env_file:
 #          - .env

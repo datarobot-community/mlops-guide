@@ -37,6 +37,7 @@ services:
         - ./.docker/external-prediction-service/logs/mlops:/var/log/mlops
         - ./.docker/mlops-agent/etc/:/etc/
         - ./.docker/mlops-agent/var/log/:/var/log/
+        - ./.docker/mlops-agent/tmp/:/tmp/
 #    datarobot-mlops-agent:
 #        env_file:
 #          - .env

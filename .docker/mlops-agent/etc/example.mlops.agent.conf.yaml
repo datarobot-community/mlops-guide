@@ -2,7 +2,7 @@
 
 # URL to the DataRobot MLOps service
 # Not sure? Check here to figure out your endpoint: https://api-docs.datarobot.com/docs/guide-to-different-datarobot-endpoints
-mlopsURL: "https://app.datarobot.com"
+mlopsURL: "https://app2.datarobot.com"
 
 # DataRobot API token
 # Instructions for getting your API token: https://api-docs.datarobot.com/docs/api-access-guide
@@ -31,10 +31,10 @@ httpTimeout: 30000
 # Note: the spoolDirectoryPath must match the MLOPS_SPOOLER_DIR_PATH used by the MLOps library.
 # Note: you must create the spoolDirectory before running the agent.
 channelConfigs:
-    - type: "RABBITMQ"
-      details: {name: "mlops", queueUrl: "rabbitmq"}
-#  - type: "FS_SPOOL"
-#    details: {name: "bench", spoolDirectoryPath: "/tmp/ta"}
+#    - type: "RABBITMQ"
+#      details: {name: "mlops", queueUrl: "rabbitmq"}
+  - type: "FS_SPOOL"
+    details: {name: "bench", spoolDirectoryPath: "/tmp/ta"}
 #  - type: "SQS_SPOOL"
 #    details: {name: "sqsSpool", queueUrl: "<your AWS SQS queue URL>"}
 

@@ -9,20 +9,32 @@ services:
         entrypoint: ["python", "automl_predictions.py"]
         volumes:
             - ./logs:/root/logs
-    mock-on-premise-prediction-service:
+    mock-external-prediction-service:
         env_file:
           - .env
         build:
             context: .
+            dockerfile: mock-external-prediction-service/Dockerfile
+            args:
+                - ARG_MLOPS_AGENT_VERSION=${ENV_MLOPS_AGENT_VERSION}
+                - ARG_MLOPS_AGENT_BUILD=${ENV_MLOPS_AGENT_BUILD}
+        entrypoint: ["python", "external_predictions.py"]
         depends_on:
           - rabbitmq
+          - datarobot-mlops-agent
         links:
           - rabbitmq
+        environment:
+          - MLOPS_DEPLOYMENT_ID=${ENV_MLOPS_DEPLOYMENT_ID}
+          - MLOPS_MODEL_ID=${ENV_MLOPS_MODEL_ID}
+        volumes:
+        - ./.docker/logs/ta/:/tmp/ta/
     datarobot-mlops-agent:
         env_file:
           - .env
         build:
-          context: ./datarobot-mlops-agent
+          context: .
+          dockerfile: datarobot-mlops-agent/Dockerfile
           args:
               - ARG_MLOPS_AGENT_VERSION=${ENV_MLOPS_AGENT_VERSION}
               - ARG_MLOPS_AGENT_BUILD=${ENV_MLOPS_AGENT_BUILD}

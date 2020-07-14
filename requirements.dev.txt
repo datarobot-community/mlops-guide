@@ -1,6 +1,7 @@
 black
+datarobot
 loguru
 python_dotenv
 requests
-
+scikit-learn
 pandas

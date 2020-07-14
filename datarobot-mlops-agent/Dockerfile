@@ -12,7 +12,7 @@ RUN apt update \
 ENV JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
 ENV PATH=$PATH:$JAVA_HOME/bin
 ADD datarobot-mlops-agent-${ARG_MLOPS_AGENT_VERSION}-${ARG_MLOPS_AGENT_BUILD}.tar.gz  /opt/datarobot/mlops/
-COPY mlops-agent-entrypoint.sh /usr/local/bin/
+COPY datarobot-mlops-agent/mlops-agent-entrypoint.sh /usr/local/bin/
 WORKDIR /opt/datarobot/mlops/datarobot-mlops-agent-${ARG_MLOPS_AGENT_VERSION}
 ENTRYPOINT ["bash", "/usr/local/bin/mlops-agent-entrypoint.sh"]
 CMD ["bash"]

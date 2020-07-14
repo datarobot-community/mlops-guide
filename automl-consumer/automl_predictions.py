@@ -18,7 +18,6 @@ from loguru import logger as log
 from auto_mpg import Car
 
 DATAROBOT_API_TOKEN = os.getenv("DATAROBOT_API_TOKEN")
-DATAROBOT_KEY = os.getenv("DATAROBOT_KEY")
 DATAROBOT_ENDPOINT = os.getenv("DATAROBOT_ENDPOINT")
 DATAROBOT_DEPLOYMENT_ID = os.getenv("DATAROBOT_DEPLOYMENT_ID")
 KEEP_ALIVE = int(os.getenv("KEEP_ALIVE", 300))
@@ -31,12 +30,8 @@ def get_car_prediction(cars: List[Car]) -> Optional[List]:
     prediction_headers = {
         "Authorization": f"Bearer {DATAROBOT_API_TOKEN}",
         "Content-Type": "application/json; charset=UTF-8",
-        "datarobot-key": DATAROBOT_KEY,
     }
-    url = (
-        f"https://datarobot-predictions.orm.datarobot.com/predApi/v1.0/"
-        f"deployments/{DATAROBOT_DEPLOYMENT_ID}/predictions"
-    )
+    url = f"{DATAROBOT_ENDPOINT}/deployments/{DATAROBOT_DEPLOYMENT_ID}/predictions/"
     response = None
     try:
         payload = [dict(car) for car in cars]
@@ -76,7 +71,7 @@ if __name__ == "__main__":
         if monotonic() - start > KEEP_ALIVE:
             log.info("Elapse time exceeds KEEP_ALIVE time. Shutting down...")
             break
-        some_cars = [Car() for _ in range(10)]
+        some_cars = [Car() for _ in range(100)]
         log.info("Making predictions.")
         summary = get_car_prediction(some_cars)
         predictions.extend(summary)

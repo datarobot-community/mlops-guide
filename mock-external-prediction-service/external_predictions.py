@@ -1,7 +1,7 @@
 import csv
 import os
 import signal
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 from time import sleep, monotonic
 from typing import Optional, List
@@ -24,7 +24,7 @@ SPOOL_DIR = "/tmp/ta"
 SPOOL_MAX_FILE_SIZE = 104_857_600
 SPOOL_MAX_FILES = 5
 KEEP_ALIVE = int(os.getenv("KEEP_ALIVE", 60))
-now = datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%SZ")
+now = datetime.now(tz=timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
 
 log.add(Path().cwd().joinpath("logs", f"external_predictions-{now}.log"))
 

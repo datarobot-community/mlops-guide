@@ -1,0 +1,11 @@
+{
+    "name": "External Auto MPG Model",
+    "modelDescription": {
+        "description": "Regression on fuel economy dataset",
+        "location": "/tmp/myModel"
+    },
+    "target": {
+        "type": "Regression",
+        "name": "mpg"
+    }
+}

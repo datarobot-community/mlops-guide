@@ -19,14 +19,16 @@ from datarobot.mlops.common.enums import OutputType
 
 MLOPS_DEPLOYMENT_ID = os.getenv("MLOPS_DEPLOYMENT_ID")
 MLOPS_MODEL_ID = os.getenv("MLOPS_MODEL_ID")
-OUTPUT_TYPE = OutputType.RABBIT_MQ
+OUTPUT_TYPE = OutputType.OUTPUT_DIR
 SPOOL_DIR = "/tmp/ta"
 SPOOL_MAX_FILE_SIZE = 104_857_600
 SPOOL_MAX_FILES = 5
 KEEP_ALIVE = int(os.getenv("KEEP_ALIVE", 60))
 now = datetime.now(tz=timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
 
-log.add(Path().cwd().joinpath("logs", f"external_predictions-{now}.log"))
+log.add(
+    Path("/var").joinpath("log", "mlops", f"external_predictions-{now}.log")
+)
 
 model = joblib.load("gbr.joblib")
 
@@ -64,7 +66,7 @@ def mpg_predictions(cars: List[Car]) -> Optional[List]:
         return None
     else:
         report_to_service_health(len(_predictions), elapse_time)
-        car_id_w_prediction =list(zip([car.car_id for car in cars], x_values))
+        car_id_w_prediction = list(zip([car.car_id for car in cars], x_values))
         log.info(f"Predictions: {car_id_w_prediction}")
         return car_id_w_prediction
 
@@ -94,7 +96,9 @@ if __name__ == "__main__":
         summary = mpg_predictions(some_cars)
         predictions.extend(summary)
         sleep(5)
-    summary_file = Path().cwd().joinpath("logs", f"external-summary-{now}.csv")
+    summary_file = Path("/var").joinpath(
+        "log", "mlops", f"external-summary-{now}.csv"
+    )
     with summary_file.open("w") as f:
         writer = csv.writer(f)
         writer.writerow(["car_id", "mpg"])

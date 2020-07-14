@@ -8,7 +8,7 @@ services:
             dockerfile: automl-consumer/Dockerfile
         entrypoint: ["python", "automl_predictions.py"]
         volumes:
-            - ./logs:/root/logs
+            - ./.docker/automl-consumer/logs:/var/log/mlops
     mock-external-prediction-service:
         env_file:
           - .env
@@ -20,7 +20,6 @@ services:
                 - ARG_MLOPS_AGENT_BUILD=${ENV_MLOPS_AGENT_BUILD}
         entrypoint: ["python", "external_predictions.py"]
         depends_on:
-          - rabbitmq
           - datarobot-mlops-agent
         links:
           - rabbitmq
@@ -28,7 +27,8 @@ services:
           - MLOPS_DEPLOYMENT_ID=${ENV_MLOPS_DEPLOYMENT_ID}
           - MLOPS_MODEL_ID=${ENV_MLOPS_MODEL_ID}
         volumes:
-        - ./.docker/logs/ta/:/tmp/ta/
+        - ./.docker/external-prediction-service/logs/ta:/tmp/ta
+        - ./.docker/external-prediction-service/logs/mlops:/var/log/mlops
     datarobot-mlops-agent:
         env_file:
           - .env

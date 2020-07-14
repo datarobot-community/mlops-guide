@@ -185,9 +185,12 @@ Temporary Items
 .docker/rabbitmq/data/
 datarobot-mlops-agent-*.tar.gz
 datarobot-mlops-agent-*/
-#/logs/*.csv
-log[s]/
+log[s]/*
+*.log*
+*spool*
 /.docker/mlops-agent/etc/mlops.agent.conf.yaml
 hostname
 hosts
 resolv.conf
+/.docker/automl-consumer/logs/*.csv
+/.docker/external-prediction-service/logs/mlops/*.csv

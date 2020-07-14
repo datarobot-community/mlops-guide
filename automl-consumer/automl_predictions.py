@@ -23,7 +23,7 @@ DATAROBOT_DEPLOYMENT_ID = os.getenv("DATAROBOT_DEPLOYMENT_ID")
 KEEP_ALIVE = int(os.getenv("KEEP_ALIVE", 300))
 now = datetime.now(tz=timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
 
-log.add(Path().cwd().joinpath("logs", f"automl_predictions-{now}.log"))
+log.add(Path("/var").joinpath("log", "mlops", f"automl_predictions-{now}.log"))
 
 
 def get_car_prediction(cars: List[Car]) -> Optional[List]:
@@ -44,7 +44,6 @@ def get_car_prediction(cars: List[Car]) -> Optional[List]:
         return None
     else:
         _predictions = response.json()
-        log.info(f"Predictions:\n{pformat(_predictions)}")
         data = _predictions["data"]
         return [
             [car["passthroughValues"]["car_id"], round(car["prediction"], 2)]
@@ -76,7 +75,7 @@ if __name__ == "__main__":
         summary = get_car_prediction(some_cars)
         predictions.extend(summary)
         sleep(5)
-    summary_file = Path().cwd().joinpath("logs", f"summary-{now}.csv")
+    summary_file = Path("/var").joinpath("log", "mlops", f"summary-{now}.csv")
     with summary_file.open("w") as f:
         writer = csv.writer(f)
         writer.writerow(["car_id", "mpg"])

@@ -18,41 +18,49 @@ services:
             args:
                 - ARG_MLOPS_AGENT_VERSION=${ENV_MLOPS_AGENT_VERSION}
                 - ARG_MLOPS_AGENT_BUILD=${ENV_MLOPS_AGENT_BUILD}
-        entrypoint: ["python", "external_predictions.py"]
-        depends_on:
-          - datarobot-mlops-agent
-        links:
-          - rabbitmq
+        entrypoint: ["bash", "run.sh"]
+#        depends_on:
+#          - rabbitmq
+#        links:
+#          - rabbitmq
         environment:
           - MLOPS_DEPLOYMENT_ID=${ENV_MLOPS_DEPLOYMENT_ID}
           - MLOPS_MODEL_ID=${ENV_MLOPS_MODEL_ID}
-        volumes:
-        - ./.docker/external-prediction-service/logs/ta:/tmp/ta
-        - ./.docker/external-prediction-service/logs/mlops:/var/log/mlops
-    datarobot-mlops-agent:
-        env_file:
-          - .env
-        build:
-          context: .
-          dockerfile: datarobot-mlops-agent/Dockerfile
-          args:
-              - ARG_MLOPS_AGENT_VERSION=${ENV_MLOPS_AGENT_VERSION}
-              - ARG_MLOPS_AGENT_BUILD=${ENV_MLOPS_AGENT_BUILD}
-        volumes:
-        - ./.docker/mlops-agent/etc/:/etc/
-        - ./.docker/mlops-agent/var/log/:/var/log/
-        links:
-          - rabbitmq
-        depends_on:
-          - rabbitmq
-        environment:
           - MLOPS_AGENT_VERSION=${ENV_MLOPS_AGENT_VERSION}
           - MLOPS_AGENT_BUILD=${ENV_MLOPS_AGENT_BUILD}
           - AGENT_HOST_DIR=${ENV_AGENT_HOST_DIR:-/opt/datarobot/mlops}
           - AGENT_CONFIG_YAML=${ENV_AGENT_CONFIG_YAML:-/etc/mlops.agent.conf.yaml}
           - AGENT_LOG_PROPERTIES=${ENV_AGENT_LOG_PROPERTIES:-/etc/mlops.agent.log4j.properties}
           - AGENT_JVM_OPT=${ENV_AGENT_JVM_OPT:--Xmx4g}
-        tty: true
+        volumes:
+        - ./.docker/external-prediction-service/logs/ta:/tmp/ta
+        - ./.docker/external-prediction-service/logs/mlops:/var/log/mlops
+        - ./.docker/mlops-agent/etc/:/etc/
+        - ./.docker/mlops-agent/var/log/:/var/log/
+#    datarobot-mlops-agent:
+#        env_file:
+#          - .env
+#        build:
+#          context: .
+#          dockerfile: datarobot-mlops-agent/Dockerfile
+#          args:
+#              - ARG_MLOPS_AGENT_VERSION=${ENV_MLOPS_AGENT_VERSION}
+#              - ARG_MLOPS_AGENT_BUILD=${ENV_MLOPS_AGENT_BUILD}
+#        volumes:
+#        - ./.docker/mlops-agent/etc/:/etc/
+#        - ./.docker/mlops-agent/var/log/:/var/log/
+#        links:
+#          - rabbitmq
+#        depends_on:
+#          - rabbitmq
+#        environment:
+#          - MLOPS_AGENT_VERSION=${ENV_MLOPS_AGENT_VERSION}
+#          - MLOPS_AGENT_BUILD=${ENV_MLOPS_AGENT_BUILD}
+#          - AGENT_HOST_DIR=${ENV_AGENT_HOST_DIR:-/opt/datarobot/mlops}
+#          - AGENT_CONFIG_YAML=${ENV_AGENT_CONFIG_YAML:-/etc/mlops.agent.conf.yaml}
+#          - AGENT_LOG_PROPERTIES=${ENV_AGENT_LOG_PROPERTIES:-/etc/mlops.agent.log4j.properties}
+#          - AGENT_JVM_OPT=${ENV_AGENT_JVM_OPT:--Xmx4g}
+#        tty: true
     rabbitmq:
         image: library/rabbitmq:3-management-alpine
         volumes:

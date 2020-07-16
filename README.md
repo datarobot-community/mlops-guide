@@ -26,7 +26,10 @@ Copy and configure `example.env` and `example.mlops.conf.yaml` e.g.:
     * KEEP_ALIVE=600
     * ENV_MLOPS_AGENT_VERSION=6.1.5
     * ENV_MLOPS_AGENT_BUILD=325
-    * ENV_MLOPS_DEPLOYMENT_ID & ENV_MLOPS_MODEL_ID [instructions](https://community.datarobot.com/t5/support-knowledge-base/what-are-project-id-model-id-and-deployment-id-where-to-find/ta-p/4643)
+    * ENV_AUTO_MLOPS_DEPLOYMENT_ID & ENV_AUTO_MLOPS_MODEL_ID 
+        [instructions](https://community.datarobot.com/t5/support-knowledge-base/what-are-project-id-model-id-and-deployment-id-where-to-find/ta-p/4643)
+    * ENV_EXTERNAL_MLOPS_DEPLOYMENT_ID & ENV_EXTERNAL_MLOPS_MODEL_ID set
+     after creating a deployment (see below)
   * `cd .docker/mlops-agent/etc`
   * `cp example.mlops.conf.yaml mlops.conf.yaml`
   * Populate `apiToken` in `mlops.conf.yaml` [instructions](https://api-docs.datarobot.com/docs/api-access-guide)
@@ -46,7 +49,11 @@ Training dataset uploaded. Catalog ID <catalog id>.
 export MLOPS_DEPLOYMENT_ID=<deployment id>; export MLOPS_MODEL_ID=<model id>
 ```
 
-Run examples:
+Set values in `.env` from those printed out in the previous step:
+* ENV_EXTERNAL_MLOPS_DEPLOYMENT_ID & ENV_EXTERNAL_MLOPS_MODEL_ID 
+
+Run examples and check both the original Auto MPG and the external service
+MLOps tabs in DataRobot to confirm both are monitoring:
 ```shell script
 docker-compose up
 ```

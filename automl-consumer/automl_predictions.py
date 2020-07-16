@@ -19,7 +19,7 @@ from auto_mpg import Car
 
 DATAROBOT_API_TOKEN = os.getenv("DATAROBOT_API_TOKEN")
 DATAROBOT_ENDPOINT = os.getenv("DATAROBOT_ENDPOINT")
-DATAROBOT_DEPLOYMENT_ID = os.getenv("DATAROBOT_DEPLOYMENT_ID")
+DATAROBOT_DEPLOYMENT_ID = os.getenv("MLOPS_DEPLOYMENT_ID")
 KEEP_ALIVE = int(os.getenv("KEEP_ALIVE", 300))
 now = datetime.now(tz=timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
 

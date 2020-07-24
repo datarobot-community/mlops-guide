@@ -8,4 +8,32 @@ services:
             dockerfile: automl-consumer/Dockerfile
         entrypoint: ["python", "automl_predictions.py"]
         volumes:
-            - ./logs:/root/logs
+            - ./.docker/automl-consumer/logs:/var/log/mlops
+        environment:
+            - MLOPS_DEPLOYMENT_ID=${ENV_MLOPS_DEPLOYMENT_ID}
+            - MLOPS_MODEL_ID=${ENV_MLOPS_MODEL_ID}
+    mock-external-prediction-service:
+        env_file:
+          - .env
+        build:
+            context: .
+            dockerfile: mock-external-prediction-service/Dockerfile
+            args:
+                - ARG_MLOPS_AGENT_VERSION=${ENV_MLOPS_AGENT_VERSION}
+                - ARG_MLOPS_AGENT_BUILD=${ENV_MLOPS_AGENT_BUILD}
+                - ARG_AGENT_HOST_DIR=${ENV_AGENT_HOST_DIR:-/opt/datarobot/mlops}
+        entrypoint: ["bash", "run.sh"]
+        environment:
+          - MLOPS_DEPLOYMENT_ID=${ENV_EXTERNAL_MLOPS_DEPLOYMENT_ID}
+          - MLOPS_MODEL_ID=${ENV_EXTERNAL_MLOPS_MODEL_ID}
+          - MLOPS_AGENT_VERSION=${ENV_MLOPS_AGENT_VERSION}
+          - MLOPS_AGENT_BUILD=${ENV_MLOPS_AGENT_BUILD}
+          - AGENT_HOST_DIR=${ENV_AGENT_HOST_DIR:-/opt/datarobot/mlops}
+          - AGENT_CONFIG_YAML=${ENV_AGENT_CONFIG_YAML:-/etc/mlops/mlops.agent.conf.yaml}
+          - AGENT_LOG_PROPERTIES=${ENV_AGENT_LOG_PROPERTIES:-/etc/mlops/mlops.agent.log4j.properties}
+          - AGENT_JVM_OPT=${ENV_AGENT_JVM_OPT:--Xmx4g}
+        volumes:
+        - ./.docker/external-prediction-service/logs/mlops:/var/log/mlops
+        - ./.docker/mlops-agent/etc/:/etc/mlops/
+        - ./.docker/mlops-agent/tmp/ta/:/tmp/ta/
+        - ./.docker/mlops-agent/logs:/opt/datarobot/mlops/datarobot-mlops-agent-6.1.5/logs/
